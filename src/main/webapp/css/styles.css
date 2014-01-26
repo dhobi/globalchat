@@ -1,0 +1,10 @@
+#userform {
+    position:absolute;
+    width:500px;
+    height:500px;
+    left:450px;
+    border:1px solid white;
+    top:155px;
+    background-color:white;
+    opacity:0.8;
+}
