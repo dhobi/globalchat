@@ -18,7 +18,7 @@ object ChatServer extends LiftActor {
       users = users.filterNot(_.id.equals(user.id))
       broadCastMessage(n)
     }
-    case n@Message => {
+    case n@Message(user,message) => {
       broadCastMessage(n)
     }
   }

@@ -39,15 +39,9 @@ function Earth() {
 	clouds.rotation.y = rotation;
 	scene.add(clouds)
 		
-	var controls = new THREE.TrackballControls(camera);
+	var controls = new THREE.TrackballControls(camera, document.getElementById("webgl"));
 
 	webglEl.appendChild(renderer.domElement);
-
-	//stats
-	var stats = new Stats();
-	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.top = '0px';
-	document.body.appendChild( stats.domElement );
 		
 	render();
 
@@ -105,7 +99,6 @@ function Earth() {
 
 		requestAnimationFrame(render);
 		renderer.render(scene, camera);
-		//stats.update();
 	}
 
 	function createLineSphereAt(point, color) {
@@ -160,10 +153,13 @@ function Earth() {
 	}
 
 	this.newMessage = function(userid, text) {
+	    console.log(userid+"/"+text)
 	    for(var i = 0; i < users.length;i++) {
 	        if(users[i].id == userid) {
                 createMessage(users[i], text);
                 break;
+	        } else {
+	            console.log(users[i].id+" is not "+userid)
 	        }
 	    }
 	}

@@ -8,3 +8,12 @@
     background-color:white;
     opacity:0.8;
 }
+
+#chat {
+    position: absolute;
+    width:300px;
+    height:200px;
+    left:0px;
+    top:0px;
+    z-index:9999999;
+}
