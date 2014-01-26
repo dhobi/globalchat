@@ -10,6 +10,7 @@ import net.liftweb.http.js.JsCmds
 import net.liftweb.common.Full
 import code.util.Coords
 import Helpers._
+import java.util.Random
 
 
 class ChatUser extends User with CometActor {
@@ -41,9 +42,17 @@ class ChatUser extends User with CometActor {
   private def userForm = {
     SHtml.a(() => {
       this.color = "#FFFFFF"
-      this.coords = Full(Coords(-9.449062,-54.843750 ))
+      this.coords = Full(Coords(randomLat.toDouble,randomLong.toDouble))
       ChatServer ! NewConnection(this)
       JsCmds.JsHideId("userform")
     }, Text("click me"))
+  }
+
+  private def randomLat = randomFloat(-90f, 90.0f)
+  private def randomLong = randomFloat(-180f, 180.0f)
+
+  private def randomFloat(minX : Float, maxX : Float) = {
+    val rand = new Random
+    rand.nextFloat() * (maxX - minX) + minX
   }
 }
