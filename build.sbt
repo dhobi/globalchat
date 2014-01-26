@@ -1,4 +1,4 @@
-name := "Lift 2.5 starter template"
+name := "GlobalChat"
 
 version := "0.0.1"
 
