@@ -18,8 +18,16 @@ class ChatUser extends User with CometActor {
   lazy val id = Helpers.nextFuncName
 
   override def lowPriority = {
-    case NewConnection(user) => partialUpdate(JsRaw("earth.createConnection('"+user.id+"',{latitude:"+user.latToString+",longitude:"+user.longToString+"}, "+user.colorToHexInt+")").cmd)
-    case ClosedConnection(user) => partialUpdate(JsRaw("earth.removeConnection('"+user.id+"')").cmd)
+    case NewConnection(user) => {
+      val connection = JsRaw("earth.createConnection('"+user.id+"',{latitude:"+user.latToString+",longitude:"+user.longToString+"}, "+user.colorToHexInt+")").cmd;
+      val chat = JsRaw("""document.getElementById("messages").innerHTML += "<div style='color: red;'>New Connection</div>"""").cmd
+      partialUpdate(connection & chat)
+    }
+    case ClosedConnection(user) => {
+      val connection = JsRaw("earth.removeConnection('"+user.id+"')").cmd
+      val chat = JsRaw("""document.getElementById("messages").innerHTML += "<div style='color: red;'>Connection lost</div>"""").cmd
+      partialUpdate(connection & chat)
+    }
     case Message(user, msg) => partialUpdate(JsRaw("earth.newMessage('"+user.id+"','"+msg.replace("'","\\'")+"')").cmd)
     case _ => //no no
   }

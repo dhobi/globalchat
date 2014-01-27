@@ -13,13 +13,29 @@
     position: absolute;
     width:300px;
     height:200px;
-    left:0px;
-    top:0px;
+    left:10px;
+    top:10px;
     z-index:9999999;
 }
 
 #messages {
     width:300px;
-        height:200px;
-        border:1px solid white;
+    padding:2px;
+    height:200px;
+    border:1px solid white;
+    border-radius:5px;
+    margin-bottom:5px;
+
+    font-face: Arial;
+    font-size: 11px;
+}
+
+#message {
+    width:240px;
+    margin:0;
+}
+
+#sendMessage {
+    width:50px;
+    margin:0;
 }
