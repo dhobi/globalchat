@@ -187,13 +187,13 @@ function Earth() {
 		var onEnd = function() {
 			for(var i = 0;i<users.length;i++) {
 				var user2 = users[i];
-				var miniSphere2 = createLineSphereAt(start, user2.color);		
-				var textMesh2 = createText(text,user2.color);
+				var miniSphere2 = createLineSphereAt(start, user.color);
+				var textMesh2 = createText(text,user.color);
 				scene.add(textMesh2);
 				scene.add(miniSphere2);
 				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function(fromUser) {
 				    if(fromUser.id == yourId) {
-				        var tc = new THREE.Color(fromUser.color);
+				        var tc = new THREE.Color(user.color);
 
 				        var messageElem = document.getElementById("messages")
 				        messageElem.innerHTML += "<div style='color:rgb("+tc.r*255+","+tc.g*255+","+tc.b*255+");'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
