@@ -79,19 +79,20 @@ function Earth() {
 						if (toDelete > -1) {
  						   messages.splice(toDelete, 1);
 						}
-					}
-					
-					if(messages[index2]) {
-					messages[index2].lastPosition = t;
-					
-					message.position.x = pos.x;
-					message.position.y = pos.y;
-					message.position.z = pos.z;
-					//message.lookAt(camera.position);
-					messages[index2].text.position.x  = message.position.x + 0.03;
-					messages[index2].text.position.y  = message.position.y - 0.02;
-					messages[index2].text.position.z  = message.position.z;
-					messages[index2].text.lookAt(camera.position);
+					} else {
+
+                        if(messages[index2]) {
+                        messages[index2].lastPosition = t;
+
+                        message.position.x = pos.x;
+                        message.position.y = pos.y;
+                        message.position.z = pos.z;
+                        //message.lookAt(camera.position);
+                        messages[index2].text.position.x  = message.position.x + 0.03;
+                        messages[index2].text.position.y  = message.position.y - 0.02;
+                        messages[index2].text.position.z  = message.position.z;
+                        messages[index2].text.lookAt(camera.position);
+                        }
 					}
 					
 				}
