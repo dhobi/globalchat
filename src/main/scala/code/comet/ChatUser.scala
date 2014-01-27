@@ -86,14 +86,20 @@ class ChatUser extends User with CometActor {
     ChatServer ! ClosedConnection(this)
   }
 
-  private def userForm = {
+  def initGlobalChat = {
+    if(this.coords.isDefined) {
+      ChatServer ! NewConnection(this)
+      JsCmds.JsHideId("userform") & JsRaw("earth = new Earth()").cmd & JsCmds.JsShowId("chat") & JsRaw("yourId = '" + id + "'").cmd
+    } else {
+      JsCmds.Alert("Please define your position")
+    }
+  }
+
+  def userForm = {
     ("#colorpicker" #> SHtml.ajaxText(this.color, str => {
       this.color = str
       JsCmds.Noop
     }) &
-      "#userSubmit" #> SHtml.ajaxButton(Text("Connect"), () => {
-        ChatServer ! NewConnection(this)
-        JsCmds.JsHideId("userform") & JsRaw("earth = new Earth()").cmd & JsCmds.JsShowId("chat") & JsRaw("yourId = '" + id + "'").cmd
-      }))(Templates(List("templates", "userSetup")).openOr(NodeSeq.Empty))
+      "#userSubmit" #> SHtml.ajaxButton(Text("Connect"), () => initGlobalChat))(Templates(List("templates", "userSetup")).openOr(NodeSeq.Empty))
   }
 }

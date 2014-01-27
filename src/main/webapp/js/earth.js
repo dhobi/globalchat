@@ -112,7 +112,8 @@ function Earth() {
 		
 		// SUPER SIMPLE GLOW EFFECT
 		// use sprite because it appears the same from all angles
-		var spriteMaterial = new THREE.SpriteMaterial( 
+		/*
+		var spriteMaterial = new THREE.SpriteMaterial(
 		{ 
 			map: new THREE.ImageUtils.loadTexture( 'images/glow.png' ), 
 			useScreenCoordinates: false, 
@@ -124,7 +125,7 @@ function Earth() {
 		var sprite = new THREE.Sprite( spriteMaterial );
 		sprite.scale.set(0.02, 0.02, 1.0);
 		mesh.add(sprite); // this centers the glow at the mesh
-		
+		*/
 		mesh.position.x = point.x;
 		mesh.position.y = point.y;
 		mesh.position.z = point.z;
