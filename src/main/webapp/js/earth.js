@@ -73,7 +73,7 @@ function Earth() {
 					if(lastPosition > t) {
 						scene.remove(message);
 						scene.remove(messages[index2].text);
-						messages[index2].onEnd();
+						messages[index2].onEnd(users[index]);
 						var toDelete = messages.indexOf(messages[index2]);
 						if (toDelete > -1) {
  						   messages.splice(toDelete, 1);
@@ -177,8 +177,8 @@ function Earth() {
 				var textMesh2 = createText(text,user2.color);
 				scene.add(textMesh2);
 				scene.add(miniSphere2);
-				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function() {
-				    if(user2.id == yourId) {
+				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function(fromUser) {
+				    if(fromUser.id == yourId) {
 				        var tc = new THREE.Color(user2.color);
 				        var cssColor = '#' + tc.getHex().toString(16);
 				        document.getElementById("messages").innerHTML += "<div style='color:"+cssColor+"'>"+text+"</div>";
@@ -187,8 +187,8 @@ function Earth() {
 				user2.messages.push(message2);
 			}
 		}
-		
-		var message = {message : miniSphere, text: textMesh, send:true, lastPosition: 0, onEnd : function() { onEnd(); }, creationDate : Date.now()}
+
+		var message = {message : miniSphere, text: textMesh, send:true, lastPosition: 0, onEnd : function(fromUser) { onEnd(); }, creationDate : Date.now()}
 		user.messages.push(message);
 		
 	}

@@ -20,7 +20,7 @@ class ChatUser extends User with CometActor {
   override def lowPriority = {
     case NewConnection(user) => partialUpdate(JsRaw("earth.createConnection('"+user.id+"',{latitude:"+user.latToString+",longitude:"+user.longToString+"}, "+user.colorToHexInt+")").cmd)
     case ClosedConnection(user) => partialUpdate(JsRaw("earth.removeConnection('"+user.id+"')").cmd)
-    case Message(user, msg) => partialUpdate(JsRaw("earth.newMessage('"+user.id+"','"+msg+"')").cmd)
+    case Message(user, msg) => partialUpdate(JsRaw("earth.newMessage('"+user.id+"','"+msg.replace("'","\\'")+"')").cmd)
     case _ => //no no
   }
 
