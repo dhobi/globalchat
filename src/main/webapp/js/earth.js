@@ -139,7 +139,20 @@ function Earth() {
 		var curvedLineMaterial =  new THREE.LineBasicMaterial({color: color, linewidth: 2});
 		var curvedLine = new THREE.Line(cp.createPointsGeometry(100), curvedLineMaterial);
 		scene.add(curvedLine);
-		users.push({id : id, coords : cords, connection: cp,messages : [], color : color});
+		users.push({id : id, coords : cords, line : curvedLine, connection: cp,messages : [], color : color});
+	}
+
+	this.removeConnection = function(userid) {
+	    for(var i = 0; i < users.length;i++) {
+        	  if(users[i].id == userid) {
+                   for(var z=0;z < users[i].messages.length;z++) {
+                       scene.remove(users[i].messages[z].message);
+                       scene.remove(users[i].messages[z].text);
+                   }
+                   scene.remove(users[i].line);
+                   users.splice(i, 1);
+        	  }
+        }
 	}
 	
 	function createText(text,color) {
@@ -157,8 +170,6 @@ function Earth() {
 	        if(users[i].id == userid) {
                 createMessage(users[i], text);
                 break;
-	        } else {
-	            console.log(users[i].id+" is not "+userid)
 	        }
 	    }
 	}
@@ -181,7 +192,7 @@ function Earth() {
 				    if(fromUser.id == yourId) {
 				        var tc = new THREE.Color(user2.color);
 				        var cssColor = '#' + tc.getHex().toString(16);
-				        document.getElementById("messages").innerHTML += "<div style='color:"+cssColor+"'>"+text+"</div>";
+				        document.getElementById("messages").innerHTML += "<div style='color:"+cssColor+"'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
 				    }
 				}, creationDate : Date.now()}
 				user2.messages.push(message2);
