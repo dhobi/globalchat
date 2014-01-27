@@ -193,9 +193,9 @@ function Earth() {
 				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function(fromUser) {
 				    if(fromUser.id == yourId) {
 				        var tc = new THREE.Color(fromUser.color);
-				        var cssColor = '#' + tc.getHex().toString(16);
+
 				        var messageElem = document.getElementById("messages")
-				        messageElem.innerHTML += "<div style='color:"+cssColor+"'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
+				        messageElem.innerHTML += "<div style='color:rgb("+tc.r*255+","+tc.g*255+","+tc.b*255+");'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
 				        messageElem.scrollTop = messageElem.scrollHeight;
 				    }
 				}, creationDate : Date.now()}
