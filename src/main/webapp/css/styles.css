@@ -17,3 +17,9 @@
     top:0px;
     z-index:9999999;
 }
+
+#messages {
+    width:300px;
+        height:200px;
+        border:1px solid white;
+}

@@ -153,7 +153,6 @@ function Earth() {
 	}
 
 	this.newMessage = function(userid, text) {
-	    console.log(userid+"/"+text)
 	    for(var i = 0; i < users.length;i++) {
 	        if(users[i].id == userid) {
                 createMessage(users[i], text);
@@ -178,7 +177,13 @@ function Earth() {
 				var textMesh2 = createText(text,user2.color);
 				scene.add(textMesh2);
 				scene.add(miniSphere2);
-				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function() {console.log(text)}, creationDate : Date.now()}
+				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function() {
+				    if(user2.id == yourId) {
+				        var tc = new THREE.Color(user2.color);
+				        var cssColor = '#' + tc.getHex().toString(16);
+				        document.getElementById("messages").innerHTML += "<div style='color:"+cssColor+"'>"+text+"</div>";
+				    }
+				}, creationDate : Date.now()}
 				user2.messages.push(message2);
 			}
 		}

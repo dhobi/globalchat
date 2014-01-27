@@ -28,13 +28,12 @@ class ChatUser extends User with CometActor {
     ChatServer ! ClosedConnection(this)
     val exp = SHtml.ajaxInvoke{() => SetHtml("userform", userForm) }
 
-    val chatNode = ("#message" #> SHtml.ajaxText(message, str => {
+    val chatNode = ("#message" #> SHtml.text(message, str => {
       message = str
-      JsCmds.Noop
     }) &
-      "#sendMessage" #> SHtml.ajaxButton("Send", () => {
+      "#sendMessage" #> SHtml.ajaxSubmit("Send", () => {
         ChatServer ! Message(this, message)
-        JsCmds.Noop
+        JsCmds.SetValueAndFocus("message","")
       }))(defaultHtml)
     chatNode ++ <div syle="z-index:999999">{Script(OnLoad(exp.cmd))}</div>
   }
@@ -44,7 +43,7 @@ class ChatUser extends User with CometActor {
       this.color = "#FFFFFF"
       this.coords = Full(Coords(randomLat.toDouble,randomLong.toDouble))
       ChatServer ! NewConnection(this)
-      JsCmds.JsHideId("userform")
+      JsCmds.JsHideId("userform") & JsRaw("yourId = '"+id+"'").cmd
     }, Text("click me"))
   }
 

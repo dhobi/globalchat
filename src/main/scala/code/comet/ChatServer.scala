@@ -11,12 +11,19 @@ object ChatServer extends LiftActor {
 
   protected def messageHandler = {
     case n@NewConnection(user) => {
+      users.foreach(registeredUser => {
+        user ! NewConnection(registeredUser)
+      })
+
       users ::= user
       broadCastMessage(n)
     }
     case n@ClosedConnection(user) => {
-      users = users.filterNot(_.id.equals(user.id))
-      broadCastMessage(n)
+      if(users.exists(_.id.equals(user.id))) {
+        users = users.filterNot(_.id.equals(user.id))
+        broadCastMessage(n)
+      }
+
     }
     case n@Message(user,message) => {
       broadCastMessage(n)

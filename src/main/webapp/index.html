@@ -23,19 +23,22 @@
 <lift:comet type="ChatUser">
     <div id="chat">
         <div id="messages"></div>
-        <input type="text" id="message"/>
-        <input type="button" id="sendMessage"/>
+        <form class="lift:form.ajax">
+            <input type="text" id="message"/>
+            <input type="submit" id="sendMessage"/>
+        </form>
     </div>
 </lift:comet>
 <div id="userform"></div>
 <div id="webgl"></div>
 
 
-
 <script>
         var users = [];
         var start = {latitude:47.023007,longitude:8.962402}
+        var yourId = "";
         var earth = new Earth();
+
 </script>
 </body>
 </html>
