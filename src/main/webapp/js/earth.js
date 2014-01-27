@@ -242,9 +242,9 @@ function Earth() {
 	
 	function createCurvePath(start, end) {
         var start3 = translateCordsToPoint(start.latitude,start.longitude);
-		start3.multiplyScalar(1.03)
+		//start3.multiplyScalar(1.03)
         var end3 = translateCordsToPoint(end.latitude, end.longitude);
-		end3.multiplyScalar(1.03)
+		//end3.multiplyScalar(1.03)
         var mid = (new LatLon(start.latitude,start.longitude)).midpointTo(new LatLon(end.latitude, end.longitude));
         var middle3 = translateCordsToPoint(mid.lat(), mid.lon(), 0);
 
