@@ -72,7 +72,9 @@ class ChatUser extends User with CometActor {
       message = str
     }) &
       "#sendMessage" #> SHtml.ajaxSubmit("Send", () => {
-        ChatServer ! Message(this, message)
+        if(message.nonEmpty) {
+          ChatServer ! Message(this, message)
+        }
         JsCmds.SetValueAndFocus("message", "")
       }))(defaultHtml)
     chatNode ++ <div syle="z-index:999999">
