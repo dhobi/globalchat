@@ -8,6 +8,7 @@
     </style>
     <link rel="stylesheet" type="text/css" href="css/colorpicker.css"/>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+    <!-- TODO serve them local -->
     <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="js/colorpicker.js"></script>
 
@@ -36,16 +37,16 @@
 
 
 <script>
-        var users = [];
         var start = {latitude:47.023007,longitude:8.962402}
         var yourId = "";
         var earth;
 
 </script>
 <script>
-var myCenter=new google.maps.LatLng(49.716,-2.196);
+var myCenter=new google.maps.LatLng(start.latitude,start.longitude);
 var marker;
 
+<!-- TODO make a google map object -->
 function initialize() {
     var mapProp = {
         center:myCenter,

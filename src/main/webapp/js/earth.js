@@ -11,7 +11,8 @@ function Earth() {
 	var width  = window.innerWidth,
 		height = window.innerHeight;
 
-		
+    //users
+	var users = [];
 	// Earth params
 	var radius   = 1,
 		segments = 32,
