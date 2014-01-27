@@ -18,6 +18,8 @@
     <script src="js/geo.js"></script>
     <script src="fonts/helvetiker_regular.typeface.js"></script>
     <script src="js/earth.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 </head>
 <body>
 <lift:comet type="ChatUser">
@@ -37,8 +39,32 @@
         var users = [];
         var start = {latitude:47.023007,longitude:8.962402}
         var yourId = "";
-        var earth = new Earth();
+        var earth;
 
+</script>
+<script>
+var myCenter=new google.maps.LatLng(49.716,-2.196);
+var marker;
+
+function initialize() {
+    var mapProp = {
+        center:myCenter,
+        zoom:1,
+        mapTypeId:google.maps.MapTypeId.HYBRID
+    };
+
+    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+    marker = new google.maps.Marker({
+        position:myCenter,
+        draggable:true,
+    });
+
+    marker.setMap(map);
+
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </body>
 </html>

@@ -6,7 +6,7 @@ import net.liftweb.http.{CometListener, CometActor}
 
 class User {
   var coords: Box[Coords] = Empty
-  var color: String = ""
+  var color: String = "#FFFFFF"
 
   def colorToHexInt = "0x"+color.replace("#","")
   def latToString = coords.map(_.lat).openOr(0.0f)

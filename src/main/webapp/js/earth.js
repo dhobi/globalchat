@@ -33,12 +33,13 @@ function Earth() {
 	sphere.rotation.y = rotation; 
 	scene.add(sphere)
 
-	
-	
     var clouds = createClouds(radius, segments);
 	clouds.rotation.y = rotation;
 	scene.add(clouds)
-		
+
+	var stars = createStars(90, 64);
+    scene.add(stars);
+
 	var controls = new THREE.TrackballControls(camera, document.getElementById("webgl"));
 
 	webglEl.appendChild(renderer.domElement);
@@ -190,9 +191,11 @@ function Earth() {
 				scene.add(miniSphere2);
 				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function(fromUser) {
 				    if(fromUser.id == yourId) {
-				        var tc = new THREE.Color(user2.color);
+				        var tc = new THREE.Color(fromUser.color);
 				        var cssColor = '#' + tc.getHex().toString(16);
-				        document.getElementById("messages").innerHTML += "<div style='color:"+cssColor+"'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
+				        var messageElem = document.getElementById("messages")
+				        messageElem.innerHTML += "<div style='color:"+cssColor+"'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
+				        messageElem.scrollTop = messageElem.scrollHeight;
 				    }
 				}, creationDate : Date.now()}
 				user2.messages.push(message2);
@@ -226,6 +229,16 @@ function Earth() {
 			})
 		);		
 	}
+
+	function createStars(radius, segments) {
+                    return new THREE.Mesh(
+                            new THREE.SphereGeometry(radius, segments, segments),
+                            new THREE.MeshBasicMaterial({
+                                    map: THREE.ImageUtils.loadTexture('images/galaxy_starfield.png'),
+                                    side: THREE.BackSide
+                            })
+                    );
+    }
 	
 	function createCurvePath(start, end) {
         var start3 = translateCordsToPoint(start.latitude,start.longitude);
