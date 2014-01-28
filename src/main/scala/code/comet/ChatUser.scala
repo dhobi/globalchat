@@ -91,7 +91,7 @@ class ChatUser extends User with CometActor {
       ChatServer ! NewConnection(this)
       JsCmds.JsHideId("userform") & JsRaw("earth = new Earth()").cmd & JsCmds.JsShowId("chat") & JsRaw("yourId = '" + id + "'").cmd
     } else {
-      JsCmds.Alert("Please define your position")
+      JsCmds.Alert("Please set your location on the map first.")
     }
   }
 
