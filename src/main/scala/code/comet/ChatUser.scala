@@ -16,16 +16,14 @@ class ChatUser extends User with CometActor {
   lazy val id = Helpers.nextFuncName
 
   override def lowPriority = {
-    case NewConnection(user) => {
-      val connection = JsRaw("earth.createConnection('" + user.id + "',{latitude:" + user.latToString + ",longitude:" + user.longToString + "}, " + user.colorToHexInt + ")").cmd;
+    case NewConnection(user) =>
+      val connection = JsRaw("earth.createConnection('" + user.id + "',{latitude:" + user.latToString + ",longitude:" + user.longToString + "}, " + user.colorToHexInt + ")").cmd
       val chat = JsRaw( """document.getElementById("messages").innerHTML += "<div style='color: """+user.color+""";'>New Connection</div>"""").cmd
       partialUpdate(connection & chat)
-    }
-    case ClosedConnection(user) => {
+    case ClosedConnection(user) =>
       val connection = JsRaw("earth.removeConnection('" + user.id + "')").cmd
       val chat = JsRaw( """document.getElementById("messages").innerHTML += "<div style='color: """+user.color+""";'>Connection lost</div>"""").cmd
       partialUpdate(connection & chat)
-    }
     case Message(user, msg) => partialUpdate(JsRaw("earth.newMessage('" + user.id + "','" + msg.replace("'", "\\'") + "')").cmd)
     case _ => //no no
   }
@@ -39,13 +37,13 @@ class ChatUser extends User with CometActor {
       }
     }).toJsCmd
 
-    def setPosition = coords match {
-      case Full(Coords(lat,long)) => JsRaw("marker.setPosition(new google.maps.LatLng("+lat+","+long+"))").cmd
+    def initPosition = coords match {
+      case Full(Coords(lat,long)) => JsRaw("map.setPosition(new google.maps.LatLng("+lat+","+long+"))").cmd
       case _ => JsCmds.Noop
     }
 
     def markerDrop = {
-      JsRaw("""google.maps.event.addListener(marker, "dragend", function(event) {
+      JsRaw("""map.registerMarkerCallback(function(event) {
       var lat = event.latLng.lat();
       var lng = event.latLng.lng();
       var value = lat+","+lng;
@@ -56,9 +54,9 @@ class ChatUser extends User with CometActor {
 
     def initColorPicker = JsRaw("""$("#colorpicker").colorpicker();""").cmd
 
-    def initMaps = JsRaw("initialize()").cmd
+    def initMaps(elem : String) = JsRaw("map = new GoogleMaps('"+elem+"');").cmd
 
-    showForm & initColorPicker & initMaps & setPosition & markerDrop
+    showForm & initColorPicker & initMaps("googleMap") & initPosition & markerDrop
   }
 
 
@@ -77,7 +75,7 @@ class ChatUser extends User with CometActor {
         }
         JsCmds.SetValueAndFocus("message", "")
       }))(defaultHtml)
-    chatNode ++ <div syle="z-index:999999">
+    chatNode ++ <div>
       {Script(OnLoad(exp.cmd))}
     </div>
   }
@@ -87,9 +85,13 @@ class ChatUser extends User with CometActor {
   }
 
   def initGlobalChat = {
+    def initEarth = JsRaw("earth = new Earth()").cmd & JsRaw("earth.setId('" + id + "')").cmd
+    def showChat = JsCmds.JsShowId("chat")
+    def closeSetup = JsCmds.JsHideId("userform")
+
     if(this.coords.isDefined) {
       ChatServer ! NewConnection(this)
-      JsCmds.JsHideId("userform") & JsRaw("earth = new Earth()").cmd & JsCmds.JsShowId("chat") & JsRaw("yourId = '" + id + "'").cmd
+      initEarth & showChat & closeSetup
     } else {
       JsCmds.Alert("Please set your location on the map first.")
     }

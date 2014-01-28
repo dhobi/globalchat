@@ -13,6 +13,7 @@ function Earth() {
 
     //users
 	var users = [];
+	var yourId = "";
 	// Earth params
 	var radius   = 1,
 		segments = 32,
@@ -176,6 +177,10 @@ function Earth() {
                 break;
 	        }
 	    }
+	}
+
+	this.setId = function(id) {
+	    yourId = id;
 	}
 
 	function createMessage(user, text) {
