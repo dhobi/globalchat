@@ -18,11 +18,11 @@ class ChatUser extends User with CometActor {
   override def lowPriority = {
     case NewConnection(user) =>
       val connection = JsRaw("earth.createConnection('" + user.id + "',{latitude:" + user.latToString + ",longitude:" + user.longToString + "}, " + user.colorToHexInt + ")").cmd
-      val chat = JsRaw( """document.getElementById("messages").innerHTML += "<div style='color: """+user.color+""";'>New Connection</div>"""").cmd
+      val chat = JsRaw( """document.getElementById("messages").innerHTML += "<div style='color: """ + user.color + """;'>New Connection</div>"""").cmd
       partialUpdate(connection & chat)
     case ClosedConnection(user) =>
       val connection = JsRaw("earth.removeConnection('" + user.id + "')").cmd
-      val chat = JsRaw( """document.getElementById("messages").innerHTML += "<div style='color: """+user.color+""";'>Connection lost</div>"""").cmd
+      val chat = JsRaw( """document.getElementById("messages").innerHTML += "<div style='color: """ + user.color + """;'>Connection lost</div>"""").cmd
       partialUpdate(connection & chat)
     case Message(user, msg) => partialUpdate(JsRaw("earth.newMessage('" + user.id + "','" + msg.replace("'", "\\'") + "')").cmd)
     case _ => //no no
@@ -30,7 +30,7 @@ class ChatUser extends User with CometActor {
 
 
   def initUserForm = {
-    def callback(forValue : String) = SHtml.ajaxCall(JsRaw(forValue), str => {
+    def callback(forValue: String) = SHtml.ajaxCall(JsRaw(forValue), str => {
       this.coords = Helpers.tryo {
         val splitted = str.split(",")
         Coords(splitted.head.toDouble, splitted.last.toDouble)
@@ -38,39 +38,44 @@ class ChatUser extends User with CometActor {
     }).toJsCmd
 
     def initPosition = coords match {
-      case Full(Coords(lat,long)) => JsRaw("map.setPosition(new google.maps.LatLng("+lat+","+long+"))").cmd
+      case Full(Coords(lat, long)) => JsRaw("map.setPosition(new google.maps.LatLng(" + lat + "," + long + "))").cmd
       case _ => JsCmds.Noop
     }
 
     def markerDrop = {
-      JsRaw("""map.registerMarkerCallback(function(event) {
+      JsRaw( """map.registerMarkerCallback(function(event) {
       var lat = event.latLng.lat();
       var lng = event.latLng.lng();
       var value = lat+","+lng;
-            """+callback("value")+"""})""").cmd
+             """ + callback("value") + """})""").cmd
     }
 
     def showForm = SetHtml("userform", userForm)
 
-    def initColorPicker = JsRaw("""$("#colorpicker").colorpicker();""").cmd
+    def initColorPicker = JsRaw( """$("#colorpicker").colorpicker();""").cmd
 
-    def initMaps(elem : String) = JsRaw("map = new GoogleMaps('"+elem+"');").cmd
+    def initMaps(elem: String) = JsRaw("map = new GoogleMaps('" + elem + "');").cmd
 
     showForm & initColorPicker & initMaps("googleMap") & initPosition & markerDrop
   }
 
+  def noWebGL = {
 
-
+    SetHtml("userform", Templates(List("templates", "nowebgl")).openOr(NodeSeq.Empty))
+  }
 
   def render = {
     ChatServer ! ClosedConnection(this)
-    val exp = SHtml.ajaxInvoke(() => initUserForm)
+    val exp = SHtml.ajaxCall(JsRaw("Detector.webgl ? 'true' : 'false'"), str => Helpers.asBoolean(str) match {
+      case Full(true) => initUserForm
+      case _ => noWebGL
+    })
 
     val chatNode = ("#message" #> SHtml.text(message, str => {
       message = str
     }) &
       "#sendMessage" #> SHtml.ajaxSubmit("Send", () => {
-        if(message.nonEmpty) {
+        if (message.nonEmpty) {
           ChatServer ! Message(this, message)
         }
         JsCmds.SetValueAndFocus("message", "")
@@ -89,7 +94,7 @@ class ChatUser extends User with CometActor {
     def showChat = JsCmds.JsShowId("chat")
     def closeSetup = JsCmds.JsHideId("userform")
 
-    if(this.coords.isDefined) {
+    if (this.coords.isDefined) {
       ChatServer ! NewConnection(this)
       initEarth & showChat & closeSetup
     } else {
