@@ -35,7 +35,8 @@ class ChatUser extends User with CometActor {
         val splitted = str.split(",")
         Coords(splitted.head.toDouble, splitted.last.toDouble)
       }
-    }).toJsCmd
+      SetHtml("connectButton", generateConnectButton)
+    })
 
     def initPosition = coords match {
       case Full(Coords(lat, long)) => JsRaw("map.setPosition(new google.maps.LatLng(" + lat + "," + long + "))").cmd
@@ -47,7 +48,7 @@ class ChatUser extends User with CometActor {
       var lat = event.latLng.lat();
       var lng = event.latLng.lng();
       var value = lat+","+lng;
-             """ + callback("value") + """})""").cmd
+             """ + callback("value").toJsCmd + """})""").cmd
     }
 
     def showForm = SetHtml("userform", userForm)
@@ -107,6 +108,17 @@ class ChatUser extends User with CometActor {
       this.color = str
       JsCmds.Noop
     }) &
-      "#userSubmit" #> SHtml.ajaxButton(Text("Connect"), () => initGlobalChat))(Templates(List("templates", "userSetup")).openOr(NodeSeq.Empty))
+      "#userSubmit" #> generateConnectButton)(Templates(List("templates", "userSetup")).openOr(NodeSeq.Empty))
+  }
+
+  def validations = List((() => this.coords.isDefined,"Please set your location on the map first."))
+
+  def getErrors = validations.collect {
+    case (validfunc, msg) if !validfunc() => msg
+  }
+
+  def generateConnectButton = getErrors match {
+    case l if l.isEmpty => SHtml.ajaxButton(Text("Connect"), () => initGlobalChat, "id" -> "userSubmit")
+    case l => SHtml.ajaxButton(Text(l.mkString(",")), () => JsCmds.Noop)
   }
 }
