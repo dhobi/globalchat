@@ -1,7 +1,7 @@
 function GoogleMaps(elemId) {
     var myCenter=new google.maps.LatLng(start.latitude,start.longitude);
     var mapProp = {
-        center:myCenter,
+        center:new google.maps.LatLng(start.latitude-20,start.longitude),
         zoom:1,
         mapTypeId:google.maps.MapTypeId.HYBRID
     };
