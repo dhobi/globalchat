@@ -200,7 +200,7 @@ function Earth() {
 				var message2 = {message : miniSphere2, text: textMesh2, send:false, lastPosition: 0, onEnd : function(fromUser) {
 				    if(fromUser.id == yourId) {
 				        var tc = new THREE.Color(user.color);
-
+                        //TODO: this is pretty ugly
 				        var messageElem = document.getElementById("messages")
 				        messageElem.innerHTML += "<div style='color:rgb("+tc.r*255+","+tc.g*255+","+tc.b*255+");'>"+text.replace("<","&lt;").replace(">","&gt;")+"</div>";
 				        messageElem.scrollTop = messageElem.scrollHeight;

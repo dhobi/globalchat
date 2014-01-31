@@ -9,6 +9,6 @@ class User {
   var color: String = "#FFFFFF"
 
   def colorToHexInt = "0x"+color.replace("#","")
-  def latToString = coords.map(_.lat).openOr(0.0f)
-  def longToString = coords.map(_.long).openOr(0.0f)
+  def lat = coords.map(_.lat).openOr(0.0)
+  def long = coords.map(_.long).openOr(0.0)
 }
