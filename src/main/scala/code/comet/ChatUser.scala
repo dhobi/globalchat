@@ -9,6 +9,7 @@ import scala.xml.{NodeSeq, Text}
 import net.liftweb.http.js.JsCmds
 import code.util.Coords
 import net.liftweb.common.Full
+import net.liftweb.util.Helpers._
 
 
 class ChatUser extends User with CometActor {
@@ -28,6 +29,7 @@ class ChatUser extends User with CometActor {
     case _ => //no no
   }
 
+  override def lifespan = Full(0 seconds)
 
   def initUserForm = {
     def callback(forValue: String) = SHtml.ajaxCall(JsRaw(forValue), str => {
