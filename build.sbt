@@ -4,15 +4,15 @@ name := "GlobalChat"
 
 version := "0.0.1"
 
-resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
-
 organization := "net.liftweb"
 
 scalaVersion := "2.10.2"
 
-resolvers ++= Seq("snapshots"     at "http://oss.sonatype.org/content/repositories/snapshots",
-                "releases"        at "http://oss.sonatype.org/content/repositories/releases"
-                )
+resolvers += "Java.net Maven2 Repository" at "http://download.java.net/maven/2/"
+
+resolvers += "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots"
+
+resolvers += "Typesafe Snapshots" at "http://repo.typesafe.com/typesafe/snapshots"
 
 seq(webSettings :_*)
 
