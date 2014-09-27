@@ -1,14 +1,14 @@
 import com.typesafe.sbt.SbtStartScript
 
-seq(StartScriptPlugin.startScriptForClassesSettings: _*)
-
 name := "GlobalChat"
 
 version := "0.0.1"
 
+resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
+
 organization := "net.liftweb"
 
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.2"
 
 resolvers ++= Seq("snapshots"     at "http://oss.sonatype.org/content/repositories/snapshots",
                 "releases"        at "http://oss.sonatype.org/content/repositories/releases"
@@ -31,4 +31,6 @@ libraryDependencies ++= {
     "org.specs2"        %% "specs2"             % "1.14"            % "test"
   )
 }
+
+seq(SbtStartScript.startScriptForClassesSettings: _*)
 
