@@ -25,12 +25,13 @@ libraryDependencies ++= {
   Seq(
     "net.liftweb"       %% "lift-webkit"        % liftVersion        % "compile",
     "net.liftmodules"   %% "lift-jquery-module_2.5" % "2.4",
-    "org.eclipse.jetty" % "jetty-webapp"        % "8.1.7.v20120910"  % "container,test",
+    "org.eclipse.jetty" % "jetty-webapp" % "9.0.0.M0" % "container", // For Jetty 9
     "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test" artifacts Artifact("javax.servlet", "jar", "jar"),
+    "javax.servlet" % "servlet-api" % "2.5" % "provided->default",
     "ch.qos.logback"    % "logback-classic"     % "1.0.6",
     "org.specs2"        %% "specs2"             % "1.14"            % "test",
-     "org.eclipse.jetty" % "jetty-server" % "7.3.1.v20110307" % "compile->default",
-     "org.eclipse.jetty" % "jetty-servlet" % "7.3.1.v20110307" % "compile->default"
+    "org.eclipse.jetty" % "jetty-server" % "9.0.0.M0" % "compile->default",
+    "org.eclipse.jetty" % "jetty-servlet" % "9.0.0.M0" % "compile->default"
   )
 }
 
