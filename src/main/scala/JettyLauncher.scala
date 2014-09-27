@@ -12,7 +12,7 @@ object JettyLauncher extends Application {
   scc.setPort(port)
   server.setConnectors(Array(scc))
 
-  val context = new ServletContextHandler(server, "/", ServletContextHandler.NO_SESSIONS)
+  val context = new ServletContextHandler(server, "/", ServletContextHandler.SESSIONS)
   context.addServlet(classOf[DefaultServlet], "/");
   context.addFilter(classOf[LiftFilter], "/*", EnumSet.of(DispatcherType.REQUEST))
   context.setResourceBase("src/main/webapp")
