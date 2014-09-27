@@ -1,3 +1,7 @@
+import com.typesafe.sbt.SbtStartScript
+
+seq(StartScriptPlugin.startScriptForClassesSettings: _*)
+
 name := "GlobalChat"
 
 version := "0.0.1"
