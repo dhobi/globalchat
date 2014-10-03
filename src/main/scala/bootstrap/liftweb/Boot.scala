@@ -31,7 +31,7 @@ class Boot {
       Menu(Loc("Static", Link(List("static"), true, "/static/index"), 
 	       "Static Content")))
 
-    LiftRules.cometGetTimeout = 20
+    LiftRules.cometRequestTimeout = Full(25)
     // set the sitemap.  Note if you don't want access control for
     // each page, just comment this line out.
     LiftRules.setSiteMap(SiteMap(entries:_*))
